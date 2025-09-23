@@ -56,9 +56,28 @@ section.language-chips {
   gap: 5px;
   justify-content: center;
   max-width: 500px;
+  margin-bottom: 40px;
 }
 
 span.chip {
   border-radius: 5px;
   padding: 5px;
 }
+
+section.word {
+  display: flex;
+  justify-content: center;
+   gap: 2px;
+}
+
+section.word > span {
+  height: 50px;
+  width: 50px;
+  background-color: #323232;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  border-bottom: 1px solid #f9f3da;
+}
+
