@@ -49,3 +49,16 @@ section.game-status > p {
   margin: 5px;
   font-size: 1.20rem;
 }
+
+section.language-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  justify-content: center;
+  max-width: 500px;
+}
+
+span.chip {
+  border-radius: 5px;
+  padding: 5px;
+}
