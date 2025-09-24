@@ -30,14 +30,23 @@ header > p{
 }
 
 section.game-status {
-  background: #10A95B;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   color: #F9F4DA;
+  min-height: 60px;
   border-radius: 5px;
   margin-block: 30px;
+}
+
+
+section.game-status.won {
+    background-color: #10A95B;
+}
+
+section.game-status.lost {
+    background-color: #BA2A2A;
 }
 
 section.game-status > h2 {
