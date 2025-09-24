@@ -11,6 +11,10 @@ export default function AssemblyEndgame() {
   const wrongGuessCount = guessedLetters.filter(
     (letter) => !currentWord.includes(letter)
   ).length;
+  const isGameWon = currentWord.split("").every(letter => guessedLetters.includes(letter))
+  const isGameLost = wrongGuessCount >= languages.length -1
+  const isGameOver = isGameWon || isGameLost
+
 
   // Static values
   const alphabet = "abcdefghijklmnopqrstuvwxyz";
@@ -23,7 +27,6 @@ export default function AssemblyEndgame() {
 
   const languageElement = languages.map((lang,index) => {
     const isLanguageLost = index < wrongGuessCount
-    // console.log(`index: ${index}, lost: ${isLanguageLost}`);
     const style = {
       backgroundColor: lang.backgroundColor,
       color: lang.color,
@@ -81,7 +84,7 @@ export default function AssemblyEndgame() {
       <section className="language-chips">{languageElement}</section>
       <section className="word">{letterElement}</section>
       <section className="keyboard">{keyboardElements}</section>
-      <button className="new-game">New Game</button>
+      {isGameOver && <button className="new-game">New Game</button>}
     </main>
   );
 }
