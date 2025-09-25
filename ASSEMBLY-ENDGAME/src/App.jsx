@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { languages } from "./assets/languages";
 import { clsx } from "clsx";
-import { getFarewellText } from "./assets/utils"
+import { getFarewellText } from "./assets/utils";
 
 export default function AssemblyEndgame() {
   // State values
@@ -12,12 +12,14 @@ export default function AssemblyEndgame() {
   const wrongGuessCount = guessedLetters.filter(
     (letter) => !currentWord.includes(letter)
   ).length;
-  const isGameWon = currentWord.split("").every(letter => guessedLetters.includes(letter))
-  const isGameLost = wrongGuessCount >= languages.length -1
-  const isGameOver = isGameWon || isGameLost
-  const lastGuessedLetter = guessedLetters[guessedLetters.length - 1]
-  const isLastGuessIncorrect = lastGuessedLetter && !currentWord.includes(lastGuessedLetter)
-
+  const isGameWon = currentWord
+    .split("")
+    .every((letter) => guessedLetters.includes(letter));
+  const isGameLost = wrongGuessCount >= languages.length - 1;
+  const isGameOver = isGameWon || isGameLost;
+  const lastGuessedLetter = guessedLetters[guessedLetters.length - 1];
+  const isLastGuessIncorrect =
+    lastGuessedLetter && !currentWord.includes(lastGuessedLetter);
 
   // Static values
   const alphabet = "abcdefghijklmnopqrstuvwxyz";
@@ -28,14 +30,14 @@ export default function AssemblyEndgame() {
     );
   }
 
-  const languageElement = languages.map((lang,index) => {
-    const isLanguageLost = index < wrongGuessCount
+  const languageElement = languages.map((lang, index) => {
+    const isLanguageLost = index < wrongGuessCount;
     const style = {
       backgroundColor: lang.backgroundColor,
       color: lang.color,
     };
 
-    const className = clsx("chip", isLanguageLost && "lost")
+    const className = clsx("chip", isLanguageLost && "lost");
     return (
       <span className={className} key={lang.name} style={style}>
         {lang.name}
@@ -64,6 +66,9 @@ export default function AssemblyEndgame() {
       <button
         className={className}
         key={letter}
+        disabled={isGameOver}
+        aria-disabled={guessedLetters.includes(letter)}
+        aria-label={`Letter ${letter}`}
         onClick={() => addGuessedLetter(letter)}
       >
         {letter.toUpperCase()}
@@ -74,29 +79,33 @@ export default function AssemblyEndgame() {
   const gameStatusClass = clsx("game-status", {
     won: isGameWon,
     lost: isGameLost,
-    farewell: !isGameOver && isLastGuessIncorrect
-  })
+    farewell: !isGameOver && isLastGuessIncorrect,
+  });
 
   function renderGameStatus() {
-    if(!isGameOver && isLastGuessIncorrect){
-      return <p className="farewell-message">Bye!</p>
+    if (!isGameOver && isLastGuessIncorrect) {
+      return (
+        <p className="farewell-message">
+          {getFarewellText(languages[wrongGuessCount - 1].name)}
+        </p>
+      );
     }
     if (isGameWon) {
-            return (
-                <>
-                    <h2>You win!</h2>
-                    <p>Well done! 🎉</p>
-                </>
-            )
-        } 
-        if(isGameLost) {
-            return (
-                <>
-                    <h2>Game over!</h2>
-                    <p>You lose! Better start learning Assembly 😭</p>
-                </>
-            )
-        }
+      return (
+        <>
+          <h2>You win!</h2>
+          <p>Well done! 🎉</p>
+        </>
+      );
+    }
+    if (isGameLost) {
+      return (
+        <>
+          <h2>Game over!</h2>
+          <p>You lose! Better start learning Assembly 😭</p>
+        </>
+      );
+    }
   }
 
   return (
@@ -108,7 +117,7 @@ export default function AssemblyEndgame() {
           from Assembly!
         </p>
       </header>
-      <section className={gameStatusClass}>
+      <section aria-live="polite" role="status" className={gameStatusClass}>
         {renderGameStatus()}
       </section>
       <section className="language-chips">{languageElement}</section>
