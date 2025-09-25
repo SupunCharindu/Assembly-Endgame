@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { languages } from "./assets/languages";
 import { clsx } from "clsx";
+import { getFarewellText } from "./assets/utils"
 
 export default function AssemblyEndgame() {
   // State values
@@ -14,6 +15,8 @@ export default function AssemblyEndgame() {
   const isGameWon = currentWord.split("").every(letter => guessedLetters.includes(letter))
   const isGameLost = wrongGuessCount >= languages.length -1
   const isGameOver = isGameWon || isGameLost
+  const lastGuessedLetter = guessedLetters[guessedLetters.length - 1]
+  const isLastGuessIncorrect = lastGuessedLetter && !currentWord.includes(lastGuessedLetter)
 
 
   // Static values
@@ -70,12 +73,13 @@ export default function AssemblyEndgame() {
 
   const gameStatusClass = clsx("game-status", {
     won: isGameWon,
-    lost: isGameLost
+    lost: isGameLost,
+    farewell: !isGameOver && isLastGuessIncorrect
   })
 
   function renderGameStatus() {
-    if(!isGameOver){
-      return null
+    if(!isGameOver && isLastGuessIncorrect){
+      return <p className="farewell-message">Bye!</p>
     }
     if (isGameWon) {
             return (
@@ -84,7 +88,8 @@ export default function AssemblyEndgame() {
                     <p>Well done! 🎉</p>
                 </>
             )
-        } else {
+        } 
+        if(isGameLost) {
             return (
                 <>
                     <h2>Game over!</h2>
